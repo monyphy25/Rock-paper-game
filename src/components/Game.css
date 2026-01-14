@@ -1,0 +1,553 @@
+.game-container {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    padding: 2rem;
+    align-items: center;
+}
+
+/* Header & Score */
+.game-header {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+.game-header h1 {
+    font-size: 3.5rem;
+    background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3));
+}
+
+.score-board {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    padding: 1.5rem 4rem;
+    border-radius: 2rem;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.score-board::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.score-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px;
+}
+
+.score-item .label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #94a3b8;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.score-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.score-item .value {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text-color);
+}
+
+.score-item .value.win {
+    color: #4ade80;
+    text-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+}
+
+.score-item .value.lose {
+    color: #f87171;
+    text-shadow: 0 0 20px rgba(248, 113, 113, 0.3);
+}
+
+.score-item .value.draw {
+    color: #A0AEC0;
+}
+
+.vs {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--accent);
+    opacity: 0.7;
+    font-style: italic;
+}
+
+.reset-score-btn {
+    margin-top: -1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+}
+
+.reset-score-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--text-color);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.reset-score-btn:active {
+    transform: translateY(0);
+}
+
+/* Picking Phase */
+.picking-phase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+}
+
+.instruction-text {
+    font-size: 1.5rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+    animation: pulse-text 2s infinite ease-in-out;
+}
+
+@keyframes pulse-text {
+
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Choices Grid */
+.choices-grid {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.choice-card {
+    width: 200px;
+    height: 260px;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border: 1px solid var(--glass-border);
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.choice-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, var(--card-color), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 0;
+    filter: blur(20px);
+}
+
+.choice-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 30px var(--card-color);
+}
+
+.choice-card:hover::before {
+    opacity: 0.15;
+}
+
+.choice-card .icon {
+    font-size: 5rem;
+    z-index: 1;
+    filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s;
+}
+
+.choice-card:hover .icon {
+    transform: scale(1.1);
+}
+
+.choice-card .name {
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    z-index: 1;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Battle Arena */
+.battle-arena {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6rem;
+    padding: 2rem;
+    min-height: 300px;
+}
+
+.battle-hand {
+    font-size: 8rem;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.4));
+}
+
+.player-hand.shaking {
+    animation: p-shake 0.5s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+.computer-hand.shaking {
+    animation: c-shake 0.5s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+/* 
+ * Animation Logic:
+ * We want the fists to shake up and down as if counting "1, 2, 3!".
+ * Rotation is used to orient the fists inwards.
+ */
+
+@keyframes p-shake {
+    0% {
+        transform: rotate(90deg) translateX(0);
+    }
+
+    50% {
+        transform: rotate(90deg) translateX(-40px);
+    }
+
+    100% {
+        transform: rotate(90deg) translateX(0);
+    }
+}
+
+@keyframes c-shake {
+    0% {
+        transform: scaleX(-1) rotate(90deg) translateX(0);
+    }
+
+    50% {
+        transform: scaleX(-1) rotate(90deg) translateX(-40px);
+    }
+
+    100% {
+        transform: scaleX(-1) rotate(90deg) translateX(0);
+    }
+}
+
+/* Apply static transform for non-shaking state if needed, but here we only show them shaking in 'battling' */
+.player-hand {
+    transform: rotate(90deg);
+}
+
+.computer-hand {
+    transform: scaleX(-1) rotate(90deg);
+}
+
+
+.battle-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    animation: pulse 1s infinite alternate;
+    text-shadow: 0 0 20px var(--accent);
+}
+
+@keyframes pulse {
+    from {
+        opacity: 0.5;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+/* Result Arena */
+.result-arena {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.result-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    opacity: 0.3;
+    transition: all 0.5s;
+    filter: blur(2px);
+    transform: scale(0.9);
+}
+
+.result-card.winner {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1.1);
+}
+
+.result-card.winner .icon {
+    filter: drop-shadow(0 0 40px var(--primary));
+    animation: win-float 3s ease-in-out infinite;
+}
+
+@keyframes win-float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.result-card .label {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #94a3b8;
+}
+
+.result-card .icon {
+    font-size: 7rem;
+}
+
+.result-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    z-index: 10;
+}
+
+.result-info h2 {
+    font-size: 4rem;
+    font-weight: 800;
+    white-space: nowrap;
+    background: linear-gradient(to bottom, #fff 40%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+}
+
+.play-again-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    background: #fff;
+    color: var(--bg-color);
+    font-weight: 700;
+    border-radius: 99px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.play-again-btn:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.4);
+}
+
+.play-again-btn:active {
+    transform: scale(0.95);
+}
+
+/* Responsiveness */
+@media (max-width: 900px) {
+    .game-container {
+        padding: 1rem;
+        gap: 2rem;
+    }
+
+    .score-board {
+        padding: 1rem 2rem;
+        gap: 1.5rem;
+    }
+
+    .game-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .choices-grid {
+        gap: 1rem;
+    }
+
+    .choice-card {
+        width: 140px;
+        height: 180px;
+    }
+
+    .choice-card .icon {
+        font-size: 3.5rem;
+    }
+
+    .result-arena {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .result-info {
+        order: -1;
+    }
+
+    .battle-arena {
+        gap: 2rem;
+    }
+
+    .battle-hand {
+        font-size: 5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .game-header h1 {
+        font-size: 2rem;
+    }
+
+    .score-board {
+        width: 100%;
+        padding: 1rem;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .score-divider {
+        display: none;
+    }
+
+    .score-item .value {
+        font-size: 2rem;
+    }
+
+    .choice-card {
+        width: 110px;
+        height: 150px;
+    }
+
+    .choice-card .icon {
+        font-size: 3rem;
+    }
+
+    .battle-arena {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 0;
+    }
+
+    .battle-hand {
+        font-size: 4rem;
+    }
+
+    /* Vertical alignment for mobile */
+    .player-hand {
+        transform: rotate(180deg);
+    }
+
+    .computer-hand {
+        transform: rotate(0deg);
+    }
+
+    .player-hand.shaking {
+        animation: p-shake-vertical 0.5s ease-in-out infinite;
+    }
+
+    .computer-hand.shaking {
+        animation: c-shake-vertical 0.5s ease-in-out infinite;
+    }
+
+    .result-info h2 {
+        font-size: 2.5rem;
+    }
+}
+
+@keyframes p-shake-vertical {
+
+    0%,
+    100% {
+        transform: rotate(180deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(180deg) translateY(20px);
+    }
+}
+
+@keyframes c-shake-vertical {
+
+    0%,
+    100% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(0deg) translateY(-20px);
+    }
+}
