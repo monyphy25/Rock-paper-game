@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RefreshCw, RotateCcw, Trophy, Minus, Skull } from 'lucide-react';
+import { RefreshCw, RotateCcw, Trophy, Skull } from 'lucide-react';
 import './Game.css';
 
 type Choice = 'rock' | 'paper' | 'scissors';
